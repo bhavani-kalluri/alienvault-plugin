@@ -1,0 +1,65 @@
+openapi: 3.0.0
+
+info:
+  title: AlienVault Threat Extractor
+  description: This plugin provides functionality to fetch recent pulse activity from AlienVault OTX.
+  version: "1.0.0"
+
+servers:
+  - url: https://otx.alienvault.com/api/v1
+
+paths:
+  /pulses/activity:
+    get:
+      operationId: GetRecentPulseActivity
+      summary: Get recent threat pulse activity from AlienVault OTX
+      description: Fetches threat intelligence pulses published recently
+      security:
+        - apiKeyAuth: []
+      responses:
+        "200":
+          description: Successful response with threat data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: Pulse name
+                        description:
+                          type: string
+                          description: Pulse description
+                        created:
+                          type: string
+                          format: date-time
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        industries:
+                          type: array
+                          items:
+                            type: string
+                        targeted_countries:
+                          type: array
+                          items:
+                            type: string
+                        references:
+                          type: array
+                          items:
+                            type: string
+                        author_name:
+                          type: string
+
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-OTX-API-KEY
