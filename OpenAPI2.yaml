@@ -9,7 +9,7 @@ servers:
   - url: https://otx.alienvault.com/api/v1
 
 paths:
-  /pulses/subscribed:
+  /pulses/activity:
     get:
       operationId: GetRecentPulseActivity
       summary: Get recent pulse activity from AlienVault OTX.
