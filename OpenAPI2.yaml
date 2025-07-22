@@ -20,15 +20,3 @@ paths:
             application/json:
               schema:
                 type: object
-      security:
-        - apiKeyAuth: []
-
-components:
-  securitySchemes:
-    apiKeyAuth:
-      type: apiKey
-      in: header
-      name: X-OTX-API-KEY
-
-security:
-  - apiKeyAuth: []
