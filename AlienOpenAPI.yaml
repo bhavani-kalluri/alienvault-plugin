@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: AlienVaultOtxApi
+  description: This API provides the Threats information from AlienVault.
+  version: 1.0.0
+servers:
+  - url: https://otx.alienvault.com/api/v1
+    description: Alien Vault Endpoint
+paths:
+  /pulses/activity:
+    get:
+      summary: Get recent pulse activity from AlienVault OTX
+      description: This API provides the Threats information from AlienVault
+      operationId: GetRecentPulseActivity
+      security:
+        - FunctionKey: []
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - AlienVault_api_key
+              properties:
+                AlienVault_api_key:
+                  type: string
+                  nullable: true
+                  description: Required to connect Alien Vault.
+      responses:
+        '200':
+          description: Successful response with impersonation check results
+        '400':
+          description: Bad request due to missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+components:
+  securitySchemes:
+    FunctionKey:
+      type: apiKey
+      in: query
+      name: code
+      description: AlienVault key required for authentication.
+  schemas:
+    DummyResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "This is a placeholder schema for compatibility."
