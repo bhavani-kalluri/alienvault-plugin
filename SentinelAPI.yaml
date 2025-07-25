@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Microsoft Sentinel Analytic Rules API
+  description: A format API plugin that retrieves all analytic rules from a Microsoft Sentinel workspace using the Azure SecurityInsights API.
+  version: 1.0.0
+servers:
+  - url: https://management.azure.com?api-version=2025-06-01
+    description: Azure Management API
+paths:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules:
+    get:
+      summary: Get all Microsoft Sentinel analytic rules
+      description: Retrieves all analytic rules from a specific Microsoft Sentinel workspace.
+      operationId: getSentinelAnalyticRules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - resourceGroupName
+                - subscriptionId
+                - client_id
+                - tenant_id
+              properties:
+                resourceGroupName:
+                  type: string
+                  description: Resource group name of the Sentinel workspace.
+                subscriptionId:
+                  type: string
+                  description: SubscriptionId.
+                client_id:
+                  type: string
+                  description: Client ID of the App registration.
+                client_secret:
+                  type: string
+                  description: Client Secret of the App registration.
+                tenant_id:
+                  type: string
+                  description: TenantId.
+                workspaceName:
+                  type: string
+                  description: Sentinel workspace name.
+      responses:
+        '200':
+          description: A list of Sentinel analytic rules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        properties:
+                          type: object
+                          description: Rule properties (varies by rule type)
+        '401':
+          description: Unauthorized. Access token missing or invalid.
+        '403':
+          description: Forbidden. The client does not have permissions on the workspace.
+      security:
+        - azure_auth: []
+
+components:
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/token
+          scopes:
+            user_impersonation: Access Azure Management API
