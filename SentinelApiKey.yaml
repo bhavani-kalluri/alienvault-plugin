@@ -34,6 +34,13 @@ paths:
           description: Microsoft Sentinel Log Analytics workspace name
           schema:
             type: string
+        - name: api-version
+          in: query
+          required: true
+          description: API version to use
+          schema:
+            type: string
+            default: 2025-06-01
       responses:
         '200':
           description: A list of Sentinel analytic rules
