@@ -10,7 +10,7 @@ servers:
   - url: https://management.azure.com
 
 paths:
-  /subscriptions/60f085ac-1f0c-42b4-b712-6f3853819a02/resourceGroups/advance-mss/providers/Microsoft.OperationalInsights/workspaces/MSS-Logs/providers/Microsoft.SecurityInsights/alertRules:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules:
     get:
       operationId: getSentinelAnalyticRules
       summary: Get all Microsoft Sentinel analytic rules
