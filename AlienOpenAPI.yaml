@@ -14,6 +14,12 @@ paths:
       summary: Get recent pulse activity from AlienVault OTX
       description: This API provides the Threats information from AlienVault
       operationId: GetRecentPulseActivity
+      parameters:
+        - name: X-OTX-API-KEY
+          in: header
+          required: true
+          schema:
+            type: string
       security:
         - apiKeyAuth: []
       responses:
