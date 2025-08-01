@@ -1,0 +1,28 @@
+openapi: 3.0.0
+
+info:
+  title: AlienVault OTX Pulse Activity
+  description: This plugin provides access to recent threat pulse activity from AlienVault OTX.
+  version: "1.0.0"
+
+servers:
+  - url: https://otx.alienvault.com/api/v1
+
+paths:
+  /pulses/activity:
+    get:
+      operationId: GetRecentPulseActivity
+      summary: Get recent pulse activity from AlienVault OTX.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+              required:
+                - alienvault_api_key
+              properties:
+                alienvault_api_key:
+                  type: string
+                  description: AlienVault APIKey for authentication.
