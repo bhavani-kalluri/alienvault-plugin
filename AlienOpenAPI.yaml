@@ -3,9 +3,11 @@ info:
   title: AlienVaultOtxApi
   description: This API provides the Threats information from AlienVault.
   version: 1.0.0
+
 servers:
   - url: https://otx.alienvault.com/api/v1
     description: Alien Vault Endpoint
+
 paths:
   /pulses/activity:
     get:
@@ -14,22 +16,9 @@ paths:
       operationId: GetRecentPulseActivity
       security:
         - apiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - X-OTX-API-KEY
-              properties:
-                X-OTX-API-KEY:
-                  type: string
-                  nullable: true
-                  description: Required to connect Alien Vault.
       responses:
         '200':
-          description: Successful response with impersonation check results
+          description: Successful response with threat data
         '400':
           description: Bad request due to missing or invalid parameters
           content:
@@ -50,12 +39,14 @@ paths:
                   error:
                     type: string
                     description: Error message.
+
 components:
   securitySchemes:
     apiKeyAuth:
       type: apiKey
       in: header
       name: X-OTX-API-KEY
+
   schemas:
     DummyResponse:
       type: object
