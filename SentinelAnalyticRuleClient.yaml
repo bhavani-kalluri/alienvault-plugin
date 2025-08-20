@@ -45,26 +45,22 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  value:
-                    type: array
-                    description: List of analytic rules
-                    x-openai-is-array: true
-                    items:
+                type: array
+                x-openai-is-array: true
+                items:
+                  type: object
+                  title: SentinelAnalyticRule
+                  description: A Microsoft Sentinel analytic rule
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    properties:
                       type: object
-                      title: SentinelAnalyticRule
-                      description: A Microsoft Sentinel analytic rule
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                        type:
-                          type: string
-                        properties:
-                          type: object
-                          description: Rule properties
+                      description: Rule properties
         '401':
           description: Unauthorized
         '403':
