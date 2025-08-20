@@ -14,7 +14,7 @@ paths:
     get:
       tags:
         - Sentinel Rules
-      operationId: listSentinelAnalyticRules
+      operationId: getSentinelAnalyticRules
       summary: Get all Microsoft Sentinel analytic rules
       description: Retrieves all analytic rules from a specific Microsoft Sentinel workspace.
       parameters:
@@ -77,3 +77,4 @@ components:
           tokenUrl: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/token
           scopes:
             https://management.azure.com/.default: Access Azure Management API
+
