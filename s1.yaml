@@ -69,7 +69,7 @@ paths:
                         properties:
                           type: object
                           description: Rule properties
-                  @odata.nextLink:
+                  "@odata.nextLink":
                     type: string
                     description: URL to retrieve the next page of results, if available.
         '401':
