@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: Microsoft Sentinel Analytic Rules API
+  version: 1.0.0
+  description: |
+    A format API plugin that retrieves all analytic rules from a Microsoft Sentinel workspace
+    using the Azure SecurityInsights API.
+
+servers:
+  - url: https://management.azure.com
+
+paths:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules:
+    get:
+      tags:
+        - Sentinel Rules
+      operationId: getSentinelAnalyticRules
+      summary: Get all Microsoft Sentinel analytic rules
+      description: Retrieves all analytic rules from a specific Microsoft Sentinel workspace.
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: resourceGroupName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: workspaceName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: api-version
+          in: query
+          required: true
+          schema:
+            type: string
+            default: 2025-06-01
+        - name: $top
+          in: query
+          required: false
+          description: Maximum number of results to return in a single page.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of Sentinel analytic rules (paginated)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      type: object
+                      title: SentinelAnalyticRule
+                      description: A Microsoft Sentinel analytic rule
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        properties:
+                          type: object
+                          description: Rule properties
+                  @odata.nextLink:
+                    type: string
+                    description: URL to retrieve the next page of results, if available.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      security:
+        - azure_auth: []
+
+components:
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/*****/oauth2/v2.0/token
+          scopes:
+            https://management.azure.com/.default: Access Azure Management API
+
+---
+
+Descriptor:
+  Name: SentinelAnalyticsSkill
+  DisplayName: Microsoft Sentinel Analytics Skill
+  Description: Skill for retrieving analytic rules from a Microsoft Sentinel workspace using the Azure SecurityInsights API
+  SupportedAuthTypes:
+    - OAuthClientCredentialsFlow
+
+Authorization:
+  Type: OAuthClientCredentialsFlow
+  ClientId: ****
+  TokenEndpoint: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/token
+  Scopes: https://management.azure.com/.default
+  AuthorizationContentType: application/x-www-form-urlencoded
+
+SkillGroups:
+  - Format: API
+    Settings:
+      OpenApiSpecUrl: https://raw.githubusercontent.com/bhavani-kalluri/alienvault-plugin/refs/heads/main/SentinelAnalyticRuleClient.yaml
