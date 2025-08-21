@@ -85,27 +85,6 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: https://login.microsoftonline.com/*****/oauth2/v2.0/token
+          tokenUrl: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/token
           scopes:
             https://management.azure.com/.default: Access Azure Management API
-
----
-
-Descriptor:
-  Name: SentinelAnalyticsSkill
-  DisplayName: Microsoft Sentinel Analytics Skill
-  Description: Skill for retrieving analytic rules from a Microsoft Sentinel workspace using the Azure SecurityInsights API
-  SupportedAuthTypes:
-    - OAuthClientCredentialsFlow
-
-Authorization:
-  Type: OAuthClientCredentialsFlow
-  ClientId: ****
-  TokenEndpoint: https://login.microsoftonline.com/c646f0a4-4a54-4072-92a7-e4c57f5e6702/oauth2/v2.0/token
-  Scopes: https://management.azure.com/.default
-  AuthorizationContentType: application/x-www-form-urlencoded
-
-SkillGroups:
-  - Format: API
-    Settings:
-      OpenApiSpecUrl: https://raw.githubusercontent.com/bhavani-kalluri/alienvault-plugin/refs/heads/main/SentinelAnalyticRuleClient.yaml
