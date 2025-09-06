@@ -9,7 +9,7 @@ servers:
   - url: https://otx.alienvault.com/api/v1
 
 paths:
-  /pulses/activity:
+  /pulses/activity?limit=5:
     get:
       operationId: GetRecentPulseActivity
       summary: Get recent pulse activity from AlienVault OTX.
@@ -20,3 +20,4 @@ paths:
             application/json:
               schema:
                 type: object
+
