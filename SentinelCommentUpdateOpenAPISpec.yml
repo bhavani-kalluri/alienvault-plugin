@@ -12,33 +12,39 @@ paths:
     put:
       summary: Add or update a comment on a Sentinel incident
       operationId: AddSentinelIncidentComment
+
       parameters:
         - name: subscriptionId
           in: path
           required: true
           schema:
             type: string
+
         - name: resourceGroup
           in: path
           required: true
           schema:
             type: string
+
         - name: workspaceName
           in: path
           required: true
           schema:
             type: string
+
         - name: incidentId
           in: path
           required: true
           schema:
             type: string
+
         - name: commentId
           in: path
           required: true
           description: GUID for the comment resource
           schema:
             type: string
+
         - name: api-version
           in: query
           required: true
@@ -54,23 +60,18 @@ paths:
             schema:
               type: object
               properties:
-                properties:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                      description: Comment text
-                    author:
-                      type: object
-                      properties:
-                        objectId:
-                          type: string
-                          description: Object ID of the App Registration or User adding the comment
-                  required:
-                    - message
-                    - author
+                message:
+                  type: string
+                  description: "Comment text to add to the incident."
+                authorObjectId:
+                  type: string
+                  description: "Object ID of the App Registration or User adding the comment."
               required:
-                - properties
+                - message
+                - authorObjectId
+            example:
+              message: "This is a test comment"
+              authorObjectId: "00000000-0000-0000-0000-000000000000"
 
       responses:
         "200":
