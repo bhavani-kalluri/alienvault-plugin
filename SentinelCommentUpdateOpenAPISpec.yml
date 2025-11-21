@@ -19,32 +19,27 @@ paths:
           required: true
           schema:
             type: string
-
         - name: resourceGroup
           in: path
           required: true
           schema:
             type: string
-
         - name: workspaceName
           in: path
           required: true
           schema:
             type: string
-
         - name: incidentId
           in: path
           required: true
           schema:
             type: string
-
         - name: commentId
           in: path
           required: true
           description: GUID for the comment resource
           schema:
             type: string
-
         - name: api-version
           in: query
           required: true
@@ -59,35 +54,25 @@ paths:
           application/json:
             schema:
               type: object
-
-             
               properties:
-                message:
-                  type: string
-                  description: "Comment text to add to the incident."
-                objectId:
-                  type: string
-                  description: "Object ID of the user or app posting the comment."
-
-                
                 properties:
                   type: object
-                  writeOnly: true
                   properties:
                     message:
                       type: string
-                    author:
+                      description: Comment text
+                    createdBy:
                       type: object
                       properties:
                         objectId:
                           type: string
-
+                          description: Object ID of the App Registration or User adding the comment
+                  required:
+                    - message
+                    - createdBy
               required:
-                - message
-                - objectId
-
-              
-              x-ms-client-name: SentinelCommentBody
+                - properties
+              x-ms-requestBody-name: requestBody
 
       responses:
         "200":
