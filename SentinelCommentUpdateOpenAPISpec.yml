@@ -59,26 +59,34 @@ paths:
           application/json:
             schema:
               type: object
+
+              
               properties:
+                message:
+                  type: string
+                  description: "Comment text to add to the incident."
+                objectId:
+                  type: string
+                  description: "Object ID of the user or app posting the comment."
+
+                
                 properties:
                   type: object
-                  x-ms-client-flatten: true
+                  writeOnly: true
                   properties:
                     message:
                       type: string
-                      description: "Comment text"
                     author:
                       type: object
-                      x-ms-client-flatten: true
                       properties:
                         objectId:
                           type: string
-                          description: "Object ID of the app registration or user"
-                  required:
-                    - message
-                    - author
+
               required:
-                - properties
+                - message
+                - objectId
+
+              x-ms-client-name: SentinelCommentBody
 
       responses:
         "200":
