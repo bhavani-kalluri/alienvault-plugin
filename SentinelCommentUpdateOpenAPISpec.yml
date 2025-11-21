@@ -60,18 +60,25 @@ paths:
             schema:
               type: object
               properties:
-                message:
-                  type: string
-                  description: "Comment text to add to the incident."
-                authorObjectId:
-                  type: string
-                  description: "Object ID of the App Registration or User adding the comment."
+                properties:
+                  type: object
+                  x-ms-client-flatten: true
+                  properties:
+                    message:
+                      type: string
+                      description: "Comment text"
+                    author:
+                      type: object
+                      x-ms-client-flatten: true
+                      properties:
+                        objectId:
+                          type: string
+                          description: "Object ID of the app registration or user"
+                  required:
+                    - message
+                    - author
               required:
-                - message
-                - authorObjectId
-            example:
-              message: "This is a test comment"
-              authorObjectId: "00000000-0000-0000-0000-000000000000"
+                - properties
 
       responses:
         "200":
