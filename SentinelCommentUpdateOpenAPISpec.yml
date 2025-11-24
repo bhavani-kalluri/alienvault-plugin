@@ -2,6 +2,7 @@ openapi: 3.0.1
 info:
   title: Add Sentinel Incident Comment API
   version: 1.0.0
+  description: API to add a comment to a Microsoft Sentinel incident.
 
 servers:
   - url: https://management.azure.com
@@ -39,11 +40,11 @@ paths:
           required: true
           schema:
             type: string
-            enum:
-              - "2025-07-01-preview"
+            enum: ["2025-07-01-preview"]
 
       requestBody:
         required: true
+        x-ms-requestBody-name: requestBody
         content:
           application/json:
             schema:
@@ -54,16 +55,22 @@ paths:
                   properties:
                     message:
                       type: string
-                      description: Comment text
+                      description: Comment text to store in Sentinel
+                    createdBy:
+                      type: object
+                      properties:
+                        objectId:
+                          type: string
+                          description: Object ID of the App Registration or User posting the comment
                   required:
                     - message
+                    - createdBy
               required:
                 - properties
-              x-ms-requestBody-name: requestBody
 
       responses:
-        "200": { description: Comment updated }
-        "201": { description: Comment created }
+        "200": { description: Comment updated successfully }
+        "201": { description: Comment created successfully }
         "400": { description: Bad Request }
         "401": { description: Unauthorized }
         "403": { description: Forbidden }
