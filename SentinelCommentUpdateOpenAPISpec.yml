@@ -2,7 +2,6 @@ openapi: 3.0.1
 info:
   title: Add Sentinel Incident Comment API
   version: 1.0.0
-  description: API to add or update comments on a Microsoft Sentinel incident.
 
 servers:
   - url: https://management.azure.com
@@ -17,29 +16,24 @@ paths:
         - name: subscriptionId
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
         - name: resourceGroup
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
         - name: workspaceName
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
         - name: incidentId
           in: path
           required: true
-          schema:
-            type: string
+          schema: { type: string }
         - name: commentId
           in: path
           required: true
           description: GUID for the comment resource
-          schema:
-            type: string
+          schema: { type: string }
         - name: api-version
           in: query
           required: true
@@ -61,34 +55,20 @@ paths:
                     message:
                       type: string
                       description: Comment text
-                    createdBy:
-                      type: object
-                      properties:
-                        objectId:
-                          type: string
-                          description: Object ID of the App Registration or User adding the comment
                   required:
                     - message
-                    - createdBy
               required:
                 - properties
               x-ms-requestBody-name: requestBody
 
       responses:
-        "200":
-          description: Comment created or updated successfully
-        "201":
-          description: Comment created
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
+        "200": { description: Comment updated }
+        "201": { description: Comment created }
+        "400": { description: Bad Request }
+        "401": { description: Unauthorized }
+        "403": { description: Forbidden }
+        "404": { description: Not Found }
+        "500": { description: Internal Server Error }
 
       security:
         - azure_auth:
