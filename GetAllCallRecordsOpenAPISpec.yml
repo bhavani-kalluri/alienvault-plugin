@@ -8,7 +8,7 @@ servers:
   - url: https://graph.microsoft.com/v1.0
 
 paths:
-  /communications/callRecords?$filter=startDateTime ge {startDateTime} and startDateTime lt {endDateTime}
+  /communications/callRecords:
     get:
       summary: Get Teams call records within a time range
       description: Retrieves call records filtered by startDateTime range.
