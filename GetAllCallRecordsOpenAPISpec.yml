@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Teams Call Records API
-  description: Retrieve Microsoft Teams call records within a specific time range using Microsoft Graph.
+  description: Retrieve Microsoft Teams call records from Microsoft Graph using OData filter on startDateTime.
   version: "1.0.0"
 
 servers:
@@ -11,23 +11,27 @@ paths:
   /communications/callRecords:
     get:
       summary: Get Teams call records within a time range
-      description: Retrieves call records filtered by startDateTime range.
+      description: |
+        Retrieves Microsoft Teams call records using OData $filter on startDateTime.
+
+        IMPORTANT:
+        The filter must be provided in the following format:
+        startDateTime ge YYYY-MM-DDTHH:MM:SSZ and startDateTime lt YYYY-MM-DDTHH:MM:SSZ
+
+        Example:
+        startDateTime ge 2026-03-24T10:30:00Z and startDateTime lt 2026-03-24T11:00:00Z
+
       operationId: getCallRecords
+
       parameters:
-        - name: startDateTimeFrom
+        - name: $filter
           in: query
-          description: Start of time range (UTC) - format YYYY-MM-DDTHH:MM:SSZ
           required: true
+          description: OData filter string for filtering call records by time range
           schema:
             type: string
-            format: date-time
-        - name: startDateTimeTo
-          in: query
-          description: End of time range (UTC) - format YYYY-MM-DDTHH:MM:SSZ
-          required: true
-          schema:
-            type: string
-            format: date-time
+            example: startDateTime ge 2026-03-24T10:30:00Z and startDateTime lt 2026-03-24T11:00:00Z
+
       responses:
         '200':
           description: Successful response with call records
@@ -61,6 +65,7 @@ paths:
                                   type: string
                                 userPrincipalName:
                                   type: string
+
         '400':
           description: Invalid request
         '401':
