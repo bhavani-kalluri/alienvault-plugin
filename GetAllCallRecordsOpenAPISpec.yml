@@ -1,40 +1,51 @@
 openapi: 3.0.1
 info:
-  title: Teams Call Records API
-  description: Retrieve Microsoft Teams call records from Microsoft Graph using OData filter on startDateTime.
+  title: Teams Online Meetings API
+  description: |
+    Retrieve Microsoft Teams online meetings for a user using OData $filter.
+
+    IMPORTANT:
+    The filter must follow this format:
+    JoinWebUrl eq 'FULL_JOIN_URL'
+
+    Example:
+    JoinWebUrl eq 'https://teams.microsoft.com/l/meetup-join/...'
+
+    Notes:
+    - Do NOT URL encode manually
+    - JoinWebUrl must match exactly
+    - Use single quotes around URL
+
   version: "1.0.0"
 
 servers:
   - url: https://graph.microsoft.com/v1.0
 
 paths:
-  /communications/callRecords:
+  /users/{userId}/onlineMeetings:
     get:
-      summary: Get Teams call records within a time range
-      description: |
-        Retrieves Microsoft Teams call records using OData $filter on startDateTime.
-
-        IMPORTANT:
-        The filter must be provided in the following format:
-        startDateTime ge YYYY-MM-DDTHH:MM:SSZ and startDateTime lt YYYY-MM-DDTHH:MM:SSZ
-
-        Example:
-        startDateTime ge 2026-03-24T10:30:00Z and startDateTime lt 2026-03-24T11:00:00Z
-
-      operationId: getCallRecords
+      summary: Get Teams meeting using JoinWebUrl
+      operationId: getOnlineMeetingByFilter
 
       parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Organizer User ID
+          schema:
+            type: string
+
         - name: $filter
           in: query
           required: true
-          description: OData filter string for filtering call records by time range
+          description: OData filter for JoinWebUrl
           schema:
             type: string
-            example: startDateTime ge 2026-03-24T10:30:00Z and startDateTime lt 2026-03-24T11:00:00Z
+            example: JoinWebUrl eq 'https://teams.microsoft.com/l/meetup-join/...'
 
       responses:
         '200':
-          description: Successful response with call records
+          description: Successful response with meeting details
           content:
             application/json:
               schema:
@@ -47,6 +58,10 @@ paths:
                       properties:
                         id:
                           type: string
+                        subject:
+                          type: string
+                        joinWebUrl:
+                          type: string
                         startDateTime:
                           type: string
                           format: date-time
@@ -56,15 +71,18 @@ paths:
                         organizer:
                           type: object
                           properties:
-                            user:
+                            identity:
                               type: object
                               properties:
-                                id:
-                                  type: string
-                                displayName:
-                                  type: string
-                                userPrincipalName:
-                                  type: string
+                                user:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    displayName:
+                                      type: string
+                                    userPrincipalName:
+                                      type: string
 
         '400':
           description: Invalid request
