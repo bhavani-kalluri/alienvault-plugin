@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: Teams Meeting Attendance Reports API
+  description: Retrieve attendance reports for a Microsoft Teams meeting using Microsoft Graph.
+  version: "1.0.0"
+
+servers:
+  - url: https://graph.microsoft.com/v1.0
+
+paths:
+  /users/{userId}/onlineMeetings/{meetingId}/attendanceReports:
+    get:
+      summary: Get attendance reports for a Teams meeting
+      description: |
+        Retrieves all attendance reports generated for a specific Teams meeting.
+
+        Notes:
+        - Attendance reports are available only after the meeting ends
+        - There can be multiple reports per meeting (e.g., recurring meetings)
+
+      operationId: getAttendanceReports
+
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Organizer User ID
+          schema:
+            type: string
+
+        - name: meetingId
+          in: path
+          required: true
+          description: Teams Meeting ID (Graph format)
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Successful response with attendance reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        meetingId:
+                          type: string
+                        totalParticipantCount:
+                          type: integer
+                        meetingStartDateTime:
+                          type: string
+                          format: date-time
+                        meetingEndDateTime:
+                          type: string
+                          format: date-time
+
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+components:
+  securitySchemes:
+    oauth2Auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Access Microsoft Graph
+
+security:
+  - oauth2Auth: []
