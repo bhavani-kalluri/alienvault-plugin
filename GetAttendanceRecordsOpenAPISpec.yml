@@ -1,0 +1,104 @@
+openapi: 3.0.1
+info:
+  title: Teams Meeting Attendance Records API
+  description: Retrieve participant-level attendance records for a Microsoft Teams meeting using Microsoft Graph.
+  version: "1.0.0"
+
+servers:
+  - url: https://graph.microsoft.com/v1.0
+
+paths:
+  /users/{userId}/onlineMeetings/{meetingId}/attendanceReports/{reportId}/attendanceRecords:
+    get:
+      summary: Get participant attendance records for a Teams meeting
+      description: |
+        Retrieves detailed participant records from a specific attendance report.
+
+        Notes:
+        - This API provides actual participant data (name, email, join/leave time)
+        - Data is available only after meeting ends
+        - Requires reportId from attendanceReports API
+
+      operationId: getAttendanceRecords
+
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Organizer User ID
+          schema:
+            type: string
+
+        - name: meetingId
+          in: path
+          required: true
+          description: Teams Meeting ID (Graph format)
+          schema:
+            type: string
+
+        - name: reportId
+          in: path
+          required: true
+          description: Attendance Report ID
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Successful response with participant attendance records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        emailAddress:
+                          type: string
+                        role:
+                          type: string
+                        totalAttendanceInSeconds:
+                          type: integer
+                        attendanceIntervals:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              joinDateTime:
+                                type: string
+                                format: date-time
+                              leaveDateTime:
+                                type: string
+                                format: date-time
+                        identity:
+                          type: object
+                          properties:
+                            displayName:
+                              type: string
+                            userPrincipalName:
+                              type: string
+
+        '400':
+          description: Invalid request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+components:
+  securitySchemes:
+    oauth2Auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Access Microsoft Graph
+
+security:
+  - oauth2Auth: []
