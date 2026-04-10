@@ -1,0 +1,120 @@
+openapi: 3.0.1
+info:
+  title: Teams Meeting Intelligence API
+  description: Unified APIs for detecting unauthorized participants in Teams meetings.
+  version: "1.0.0"
+
+servers:
+  - url: https://graph.microsoft.com/v1.0
+
+paths:
+
+  /communications/callRecords:
+    get:
+      summary: Get completed Teams meetings (call records)
+      operationId: getCallRecords
+      parameters:
+        - name: $filter
+          in: query
+          required: true
+          description: Filter by meeting start time
+          schema:
+            type: string
+            example: startDateTime ge 2026-03-24T10:30:00Z and startDateTime lt 2026-03-24T11:00:00Z
+      responses:
+        '200':
+          description: Call records retrieved
+
+  /users/{userId}/onlineMeetings:
+    get:
+      summary: Resolve meeting using JoinWebUrl
+      operationId: getOnlineMeetings
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: $filter
+          in: query
+          required: true
+          description: Filter by JoinWebUrl
+          schema:
+            type: string
+            example: JoinWebUrl eq 'https://teams.microsoft.com/...'
+      responses:
+        '200':
+          description: Online meeting retrieved
+
+  /users/{userId}/onlineMeetings/{meetingId}/attendanceReports:
+    get:
+      summary: Get attendance reports
+      operationId: getAttendanceReports
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: meetingId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Attendance reports retrieved
+
+  /users/{userId}/onlineMeetings/{meetingId}/attendanceReports/{reportId}/attendanceRecords:
+    get:
+      summary: Get participant attendance records
+      operationId: getAttendanceRecords
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: meetingId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Attendance records retrieved
+
+  /users/{userId}/events:
+    get:
+      summary: Get calendar events (invited participants)
+      operationId: getUserEvents
+      description: |
+        Retrieves all calendar events for a user.
+        Filtering MUST be handled in logic instead of API due to reliability issues.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Events retrieved
+
+components:
+  securitySchemes:
+    oauth2Auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/{tenant-id}/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Access Microsoft Graph
+
+security:
+  - oauth2Auth: []
